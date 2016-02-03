@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="FamilyHistory.css">
+<script src="js/angular.min.js"></script>
+<body ng-app="myApp" ng-controller="famHistCtrl">
+
+<h2>My Family History List</h2>
+<h3>
+<form ng-submit="famHistAdd()">
+    <input type="text" ng-model="famHistInput" size="20" placeholder="Person">
+	<input type="text" ng-model="famHistInput2" size="20" placeholder="Father">
+	<input type="text" ng-model="famHistInput3" size="20" placeholder="Mother">
+    <input type="submit" value="Add New">
+</form>
+
+<br>
+
+<div ng-repeat="x in famHistList">
+    <input type="checkbox" ng-model="x.done"> <span ng-bind="x.famHistText"></span>
+</div>
+
+<p><button ng-click="remove()">Remove marked</button></p>
+</h3>
+<script>
+var app = angular.module('myApp', []); 
+app.controller('famHistCtrl', function($scope) {
+    $scope.famHistList = [{famHistText:'John Smith, James Smith, Sally Sue', done:false}];
+
+    $scope.famHistAdd = function() {
+		if ($scope.famHistInput == null || $scope.famHistInput == ""){
+			$scope.famHistInput = "No Person";
+		};
+		if ($scope.famHistInput2 == null || $scope.famHistInput2 == ""){
+			$scope.famHistInput2 = "No Father";
+		};
+		if ($scope.famHistInput3 == null || $scope.famHistInput3 == ""){
+			$scope.famHistInput3 = "No Mother";
+		};
+        $scope.famHistList.push({famHistText:$scope.famHistInput + ", " + $scope.famHistInput2 + ", " + $scope.famHistInput3, done:false});
+        $scope.famHistInput = "";
+		$scope.famHistInput2 = "";
+		$scope.famHistInput3 = "";
+    };
+
+    $scope.remove = function() {
+        var oldList = $scope.famHistList;
+        $scope.famHistList = [];
+        angular.forEach(oldList, function(x) {
+            if (!x.done) $scope.famHistList.push(x);
+        });
+    };
+});
+</script>
+
+</body>
+</html>
